@@ -9,70 +9,109 @@ const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueO
 const last_posts = posts.slice(0, 3);
 ---
 
-<BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Manuel Ernesto</div>
-    <div class="text-3xl py-3 font-bold">Software Engineer and Entrepreneur</div>
-    <div class="py-2">
-      <text class="text-lg">
-        This is <b>Astrofy</b> a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS.
-        Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed. I hope you find
-        it useful!
-      </text>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leonardo Possati - Designer</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/images/background.png');
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+      }
+      .content {
+        display: flex;
+        height: 100vh;
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+      }
+      .left-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        height: calc(100vh - 4rem);
+      }
+      .header {
+        max-width: 600px;
+      }
+      .name {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      .tagline {
+        font-size: 1.2rem;
+        font-style: italic;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+        line-height: 1.5;
+      }
+      .more-link {
+        color: white;
+        text-decoration: underline;
+        font-size: 1rem;
+      }
+      .navigation {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .navigation li {
+        margin-bottom: 1rem;
+      }
+      .navigation a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: opacity 0.2s;
+      }
+      .navigation a:hover {
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background"></div>
+    <div class="content">
+      <div class="left-section">
+        <div class="header">
+          <h1 class="name">Leonardo Possati</h1>
+          <p class="tagline">Exploring the interplay of art, design and materiality. Where precision meets spontaneity.</p>
+          <a href="/about" class="more-link">more about me</a>
+        </div>
+        <nav>
+          <ul class="navigation">
+            <li><a href="/shell-chair">SHELL CHAIR</a></li>
+            <li><a href="/ti-lamp">TI LAMP</a></li>
+            <li><a href="/domus-bulgari">DOMUS BULGARI</a></li>
+            <li><a href="/light-lines">LIGHT LINES</a></li>
+            <li><a href="/boba-table">BOBA TABLE</a></li>
+            <li><a href="/foldy">FOLDY</a></li>
+            <li><a href="/otio">OTIO</a></li>
+            <li><a href="/sonus">SONUS</a></li>
+            <li><a href="/renders">RENDERS</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <div class="mt-8">
-      <a class="btn" href="https://twitter.com/manuelernestog" target="_blank"> Let's connect!</a>
-      <a href="https://github.com/manuelernestog/astrofy" target="_blank" class="btn btn-outline ml-5">
-        Get This template
-      </a>
-    </div>
-  </div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
-  </div>
-
-  <HorizontalCard
-    title="Demo Project 1"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 2"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 3"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="FOSS"
-  />
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
-  </div>
-
-  {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.heroImage}
-          desc={post.data.description}
-          url={"/blog/" + createSlug(post.data.title, post.slug)}
-          target="_self"
-          badge={post.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
-</BaseLayout>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="BOBA TABLE">
+  <p>
+    The BoBa table was born from a collaboration with artist and designer Carmen Puig. The structure is made by singular interchangeable modules stacked on each other.
+  </p>
+
+  <br>
+
+  <p>
+    There are two types of modules: one is made of walnut and other two are decorated with textiles made with Saori weaving, a Japanese contemporary hand weaving technique embracing creativity and free expression also emphasized by the Boba table.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/boba-table/BobaHands.png';
+    if (smallImage1) smallImage1.src = '/images/boba-table/BobaDouble.png';
+    if (smallImage2) smallImage2.src = '/images/boba-table/Bobadetails.png';
+  </script>
+</ProjectLayout> 

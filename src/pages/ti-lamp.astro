@@ -1,0 +1,32 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="TI LAMP">
+  <p>
+    An indirect light reading lamp made with industrial materials and shapes that plays with light reflection. For the design of this lamp I focused on the effect of reflection on metals. Another element that was considered was the regulation of the flow of light through gestures.
+  </p>
+
+  <br>
+
+  <p>
+    Ti Lamp is a reading lamp composed of two main parts: the industrial iron base and the white iron lampshade. The base has a double H section and inside it has a LED spotlight as source. For the production of the various elements we used two different steel processes: molding for the production of the lampshade and extrusion for the profile that acts as a base.
+  </p>
+
+  <br>
+
+  <p>
+    The lampshade is designed so as it changes angle the effect of the light on the surface changes.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/ti-lamp/Ti_in_space.png';
+    if (smallImage1) smallImage1.src = '/images/ti-lamp/Ti_draft.png';
+    if (smallImage2) smallImage2.src = '/images/ti-lamp/Ti_detail.png';
+  </script>
+</ProjectLayout> 

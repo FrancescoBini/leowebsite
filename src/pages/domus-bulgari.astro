@@ -1,0 +1,32 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="DOMUS BULGARI">
+  <p>
+    An immersive experience designed for Bulgari for it's entrance in the metaverse. This project won the 1st prize at 13th Design Marathon organized by NABA in collaboration with Bulgari.
+  </p>
+
+  <br>
+
+  <p>
+    Domus Bulgari is a group project born from a brief launched by the Bulgari brand for its entry into the world of virtual and metaverse realities. The concept behind the project consists in a democratization of the luxury company by creating an immersive experience where each user can approach the brand through a path of personalization of their virtual avatar. A roman Domus as the frame of their metaverse.
+  </p>
+
+  <br>
+
+  <p>
+    In the structure there are several rooms where the user can customize their own avatar, but without seeing it as the experience in first person. When the visitor finally get to the fountain he can see through reflection the look of his avatar. Once the avatar has been revealed, there will be the opportunity to share it through the various social platforms or to "mint" the NFT of it, becoming part of the elite of the brand's community that will lead to various benefits.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/domus-bulgari/Domus_from_front.png';
+    if (smallImage1) smallImage1.src = '/images/domus-bulgari/Domus_from_above.png';
+    if (smallImage2) smallImage2.src = '/images/domus-bulgari/Domus_painting.png';
+  </script>
+</ProjectLayout> 

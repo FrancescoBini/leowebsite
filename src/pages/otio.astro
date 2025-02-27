@@ -1,0 +1,38 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="OTIO">
+  <p>
+    A family of simple and playful objects designed for the younger generation, merging functionality and adaptability with social interactions. The collection is composed by a side table, a double sided stool that can turn in a chess board and a lantern.
+  </p>
+
+  <br>
+
+  <p>
+    Otio wine table is a small side table made by three different parts connected by simple tight joints. The top part is designed to safely store a bottle in the middle and wine glasses on the edges while the legs are connected by a cross joint.
+  </p>
+
+  <br>
+
+  <p>
+    Otio chess stool is a stool made by three different parts connected by tight joints. The top is reversible so it can be turned to have a simple stool or a chess board. The legs are connected by a cross joint.
+  </p>
+
+  <br>
+
+  <p>
+    Otio lamp is an ambient lantern made by three parts connected by tight joints. The main structure is kept together by a cross joint and it tights up around the rectangular shaped lampshade which also serves to keep the structure together. The plywood handle is connected to the main structure by a bridle joint.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/otio/otio1.png';
+    if (smallImage1) smallImage1.src = '/images/otio/otiomultiple.png';
+    if (smallImage2) smallImage2.src = '/images/otio/otiohand.png';
+  </script>
+</ProjectLayout> 

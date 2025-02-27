@@ -1,0 +1,32 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="FOLDY">
+  <p>
+    Foldy is a firewood rack designed for small interior spaces with fireplaces. The concept behind this product begun through an initial exploration of various cuts on a single sheet of material followed by precision folding in order to minimize excess waste.
+  </p>
+
+  <br>
+
+  <p>
+    After numerous prototypes, I arrived at this particular leg shape, which proved to be ideal for ensuring the structural stability of the entire design. During the early prototyping phase, an issue was encountered with the legs lacking sufficient strength, this led to the addition of the rope, positioned in order to prevent them from splitting under weight pressure.
+  </p>
+
+  <br>
+
+  <p>
+    Foldy has been created from an 11 gauge cold rolled steel sheet, plasma cutted, hand sanded and hand folded. After this process, it was coated with a durable metal primer, painted in forest green, and finished with a protective clear coat sealer.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/foldy/Foldy1.png';
+    if (smallImage1) smallImage1.src = '/images/foldy/Foldymultiple.png';
+    if (smallImage2) smallImage2.src = '/images/foldy/FoldyCloseup.png';
+  </script>
+</ProjectLayout> 

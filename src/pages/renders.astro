@@ -1,0 +1,140 @@
+---
+import Lightbox from "../components/Lightbox.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Renders - Leonardo Possati</title>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="back-button">back</a>
+      <h1>RENDERS</h1>
+      <div class="image-grid">
+        <img src="/images/Renders/Chairs.png" alt="Chairs Render" class="chairs-render" />
+        <div class="blocks-section">
+          <img src="/images/Renders/Shapes1.png" alt="Shapes Render 1" class="blocks-render" />
+          <img src="/images/Renders/Shapes2.png" alt="Shapes Render 2" class="blocks-render" />
+        </div>
+        <div class="shoes-section">
+          <img src="/images/Renders/Shoes1.png" alt="Shoes Render 1" class="shoes-render" />
+          <img src="/images/Renders/Shoes2.png" alt="Shoes Render 2" class="shoes-render" />
+        </div>
+      </div>
+    </div>
+    <Lightbox />
+  </body>
+</html>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(250, 247, 242);
+    min-height: 100%;
+  }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: black;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .back-button {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    color: black;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 300;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  .back-button:hover {
+    opacity: 0.7;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 3rem;
+    font-weight: bold;
+    color: black;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    text-transform: uppercase;
+  }
+
+  .image-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding-bottom: 2rem;
+  }
+
+  .chairs-render {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .chairs-render:hover {
+    transform: scale(1.02);
+  }
+
+  .blocks-section,
+  .shoes-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .blocks-render,
+  .shoes-render {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .blocks-render:hover,
+  .shoes-render:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    .blocks-section,
+    .shoes-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .image-grid {
+      gap: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+  }
+</style> 

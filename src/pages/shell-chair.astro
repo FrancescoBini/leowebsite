@@ -1,0 +1,32 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="SHELL CHAIR">
+  <p>
+    A chair designed after a hermit crab, the aim was to create multifunctional lounge chair that could be used in different positions to give the feeling of protection that the shell gives to the hermit.
+  </p>
+
+  <br>
+
+  <p>
+    The chair is made by three distinct elements. The first one is the pouf, that is separated from the rest of the structure. The back is supported by two soft cylinders that hold together the four multilayer wood panels.
+  </p>
+
+  <br>
+
+  <p>
+    Lateral wood panels have the purpose to isolate the seater from the rest around him, they also compose the armrests. The back has two lateral holes so the legs can fit and the chair can be used also on the opposite side.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/shell-chair/Shell_living.png';
+    if (smallImage1) smallImage1.src = '/images/shell-chair/Shell_drafts.png';
+    if (smallImage2) smallImage2.src = '/images/shell-chair/Shell_closeup.png';
+  </script>
+</ProjectLayout> 

@@ -1,0 +1,32 @@
+---
+import ProjectLayout from "../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout title="LIGHT LINES">
+  <p>
+    Light Lines is a collection of light sculptures inspired by the most famous building around the globe. The Milan collection is the first series inspired by two of the most iconic and historically relevant architectural works that changed forever the skyline of the city.
+  </p>
+
+  <br>
+
+  <p>
+    Cristallo and Velaschina are the first two objects of the Milan collection, inspired by the "Grattacielo Pirelli" designed by Gio Ponti and the "Torre Velasca" designed by BBPR studio.
+  </p>
+
+  <br>
+
+  <p>
+    Cristallo is a diffused light lamp composed by an extruted alluminium structure that hosts four different light sources; two of them are diffused by curved glass panels and the other two, located on the side of the structure, create a unique light-cutting effect on the environment.
+  </p>
+
+  <script>
+    // Set the images
+    const mainImage = document.getElementById('main-image');
+    const smallImage1 = document.getElementById('small-image-1');
+    const smallImage2 = document.getElementById('small-image-2');
+    
+    if (mainImage) mainImage.src = '/images/light-lines/Light_slimliving.png';
+    if (smallImage1) smallImage1.src = '/images/light-lines/Light_slimdetails.png';
+    if (smallImage2) smallImage2.src = '/images/light-lines/Light_both.png';
+  </script>
+</ProjectLayout> 
