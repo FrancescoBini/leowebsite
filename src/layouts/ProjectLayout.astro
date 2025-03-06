@@ -14,6 +14,22 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} - Leonardo Possati</title>
     <style>
+      :root {
+        /* Reference dimensions based on 14-inch MacBook Pro */
+        --reference-width: 1512px;
+        --max-reference-width: 1550px;
+        --scale-factor: 1;
+        
+        /* Base sizes that will be scaled */
+        --base-padding: 2rem;
+        --base-gap: 2rem;
+        --base-title-size: 2.5rem;
+        --base-text-size: 1.1rem;
+        --base-back-size: 1rem;
+        --base-content-width: 500px;
+        --base-container-width: 1400px;
+      }
+      
       body {
         margin: 0;
         padding: 0;
@@ -22,62 +38,81 @@ const { title } = Astro.props;
         color: black;
         height: 100vh;
         overflow: hidden;
+        position: relative;
       }
+      
+      /* Container to maintain proportional layout */
+      .wrapper {
+        width: 100%;
+        height: 100vh;
+        max-width: var(--max-reference-width);
+        margin: 0 auto;
+        position: relative;
+      }
+      
       .container {
         display: grid;
         grid-template-columns: 0.8fr 1.2fr;
-        gap: 2rem;
-        padding: 2rem;
-        max-width: 1400px;
+        gap: var(--base-gap);
+        padding: var(--base-padding);
+        max-width: var(--base-container-width);
         margin: 0;
         height: 100vh;
         box-sizing: border-box;
       }
+      
       .back-button {
         position: fixed;
-        top: 2rem;
-        left: 2rem;
+        top: var(--base-padding);
+        left: var(--base-padding);
         text-decoration: none;
         color: black;
-        font-size: 1rem;
+        font-size: var(--base-back-size);
         font-weight: 300;
         z-index: 10;
       }
+      
       .content {
-        padding-top: 2rem;
+        padding-top: var(--base-padding);
         padding-left: 0;
-        max-width: 500px;
-        height: calc(100vh - 4rem);
+        max-width: var(--base-content-width);
+        height: calc(100vh - (var(--base-padding) * 2));
         position: relative;
       }
+      
       .title {
-        font-size: 2.5rem;
+        font-size: var(--base-title-size);
         font-weight: bold;
-        margin-bottom: 2rem;
+        margin-bottom: var(--base-gap);
         margin-left: 0;
       }
+      
       .description {
-        font-size: 1.1rem;
+        font-size: var(--base-text-size);
         line-height: 1.6;
         margin-left: 0;
         height: calc(100% - 6rem);
         overflow-y: auto;
         padding-right: 1rem;
       }
+      
       .description p {
         margin: 0 0 3rem 0;
       }
+      
       .description p:last-child {
         margin-bottom: 2rem;
       }
+      
       .images {
         display: grid;
         grid-template-rows: 2fr 1fr;
-        gap: 1rem;
-        height: calc(100vh - 4rem);
+        gap: calc(var(--base-gap) * 0.5);
+        height: calc(100vh - (var(--base-padding) * 2));
         position: sticky;
-        top: 2rem;
+        top: var(--base-padding);
       }
+      
       .main-image {
         width: 100%;
         height: auto;
@@ -85,23 +120,28 @@ const { title } = Astro.props;
         object-fit: cover;
         transition: transform 0.3s ease;
       }
+      
       .main-image:hover {
         transform: scale(1.02);
       }
+      
       .small-images {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+        gap: calc(var(--base-gap) * 0.5);
       }
+      
       .small-image {
         width: 100%;
         aspect-ratio: 16/9;
         object-fit: cover;
         transition: transform 0.3s ease;
       }
+      
       .small-image:hover {
         transform: scale(1.02);
       }
+      
       img {
         border-radius: 4px;
         background-color: #f5f5f5;
@@ -111,21 +151,55 @@ const { title } = Astro.props;
       .description::-webkit-scrollbar {
         width: 6px;
       }
+      
       .description::-webkit-scrollbar-track {
         background: #f1f1f1;
         border-radius: 3px;
       }
+      
       .description::-webkit-scrollbar-thumb {
         background: #888;
         border-radius: 3px;
       }
+      
       .description::-webkit-scrollbar-thumb:hover {
         background: #555;
       }
 
-      /* Add scroll event listener to body */
-      body {
-        position: relative;
+      /* Scaling for screens larger than reference width */
+      @media screen and (min-width: 1551px) {
+        :root {
+          /* Calculate proportional scaling */
+          --scale-factor: calc(100vw / var(--max-reference-width));
+          
+          /* Apply scaling to base sizes with controlled growth */
+          --base-padding: calc(2rem * min(1.2, var(--scale-factor)));
+          --base-gap: calc(2rem * min(1.2, var(--scale-factor)));
+          
+          /* Increase font sizes by 20-35% */
+          --base-title-size: calc(2.5rem * min(1.35, var(--scale-factor) * 1.2));
+          --base-text-size: calc(1.1rem * min(1.35, var(--scale-factor) * 1.2));
+          --base-back-size: calc(1rem * min(1.35, var(--scale-factor) * 1.2));
+          
+          /* Scale content width proportionally */
+          --base-content-width: calc(500px * min(1.5, var(--scale-factor) * 1.2));
+          --base-container-width: calc(1400px * min(1.5, var(--scale-factor) * 1.2));
+        }
+        
+        /* For screens wider than reference, apply container scaling */
+        .wrapper {
+          max-width: none;
+          width: 100%;
+        }
+        
+        /* Adjust image grid spacing */
+        .images {
+          gap: calc((var(--base-gap) * 0.5) * var(--scale-factor));
+        }
+        
+        .small-images {
+          gap: calc((var(--base-gap) * 0.5) * var(--scale-factor));
+        }
       }
     </style>
     <script>
@@ -142,23 +216,58 @@ const { title } = Astro.props;
             description.scrollTop += e.deltaY;
           }
         }, { passive: false });
+        
+        // Add resize listener to apply custom scaling
+        window.addEventListener('resize', adjustForScreenSize);
+        
+        // Run once on load
+        adjustForScreenSize();
       });
+      
+      function adjustForScreenSize() {
+        const referenceWidth = 1550;
+        const currentWidth = window.innerWidth;
+        
+        // Only apply scaling for screens larger than the reference
+        if (currentWidth > referenceWidth) {
+          // Calculate scaling factor (capped to prevent excessive scaling)
+          const scaleFactor = Math.min(1.5, currentWidth / referenceWidth);
+          
+          // Apply scaling factor to document root for CSS variable access
+          document.documentElement.style.setProperty('--scale-factor', scaleFactor.toString());
+          
+          // Calculate and set the content width based on the viewport
+          const contentWidth = Math.min(500 * scaleFactor * 1.2, currentWidth * 0.3);
+          document.documentElement.style.setProperty('--base-content-width', `${contentWidth}px`);
+          
+          // Calculate and set the container width based on the viewport
+          const containerWidth = Math.min(1400 * scaleFactor * 1.2, currentWidth * 0.9);
+          document.documentElement.style.setProperty('--base-container-width', `${containerWidth}px`);
+        } else {
+          // Reset to default values for smaller screens
+          document.documentElement.style.setProperty('--scale-factor', '1');
+          document.documentElement.style.setProperty('--base-content-width', '500px');
+          document.documentElement.style.setProperty('--base-container-width', '1400px');
+        }
+      }
     </script>
   </head>
   <body>
-    <a href="/" class="back-button">back</a>
-    <div class="container">
-      <div class="content">
-        <h1 class="title">{title}</h1>
-        <div class="description">
-          <slot />
+    <div class="wrapper">
+      <a href="/" class="back-button">back</a>
+      <div class="container">
+        <div class="content">
+          <h1 class="title">{title}</h1>
+          <div class="description">
+            <slot />
+          </div>
         </div>
-      </div>
-      <div class="images">
-        <img id="main-image" class="main-image" alt="Main project image" />
-        <div class="small-images">
-          <img id="small-image-1" class="small-image" alt="Additional project image 1" />
-          <img id="small-image-2" class="small-image" alt="Additional project image 2" />
+        <div class="images">
+          <img id="main-image" class="main-image" alt="Main project image" />
+          <div class="small-images">
+            <img id="small-image-1" class="small-image" alt="Additional project image 1" />
+            <img id="small-image-2" class="small-image" alt="Additional project image 2" />
+          </div>
         </div>
       </div>
     </div>
