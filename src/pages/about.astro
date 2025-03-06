@@ -8,6 +8,36 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>About - Leonardo Possati</title>
     <style>
+      :root {
+        /* Reference dimensions based on 14-inch MacBook Pro */
+        --reference-width: 1512px;
+        --max-reference-width: 1550px;
+        --scale-factor: 1;
+        
+        /* Base sizes that will be scaled */
+        --base-padding: 2rem;
+        --base-gap: 2rem;
+        --base-name-size: 2.5rem;
+        --base-text-size: 1.2rem;
+        --base-contact-title-size: 1.5rem;
+        --base-contact-text-size: 1.1rem;
+        --base-back-size: 1rem;
+        
+        /* Mobile reference dimensions */
+        --mobile-reference-width: 375px;
+        --mobile-max-width: 440px;
+        --mobile-scale-factor: 1;
+        
+        /* Mobile base sizes */
+        --mobile-padding: 1.5rem;
+        --mobile-gap: 1.5rem;
+        --mobile-name-size: 2rem;
+        --mobile-text-size: 1rem;
+        --mobile-contact-title-size: 1.3rem;
+        --mobile-contact-text-size: 1rem;
+        --mobile-back-size: 0.9rem;
+      }
+      
       body {
         margin: 0;
         padding: 0;
@@ -35,7 +65,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         justify-content: center;
       }
       .name {
-        font-size: 2.5rem;
+        font-size: var(--base-name-size);
         font-weight: bold;
         text-align: center;
         margin: 0;
@@ -51,7 +81,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         text-align: center;
       }
       .contacts h2 {
-        font-size: 1.5rem;
+        font-size: var(--base-contact-title-size);
         font-weight: bold;
         margin-bottom: 1rem;
         color: black;
@@ -61,7 +91,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         color: black;
         text-decoration: none;
         margin-bottom: 0.5rem;
-        font-size: 1.1rem;
+        font-size: var(--base-contact-text-size);
       }
       .contacts a:hover {
         text-decoration: underline;
@@ -74,7 +104,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         height: calc(100vh - 8rem);
       }
       .description p {
-        font-size: 1.2rem;
+        font-size: var(--base-text-size);
         line-height: 1.6;
         margin: 0;
       }
@@ -84,11 +114,274 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         left: 2rem;
         text-decoration: none;
         color: black;
-        font-size: 1rem;
+        font-size: var(--base-back-size);
         font-weight: 300;
         z-index: 10;
       }
+      
+      /* Mobile styles for iPhone devices up to iPhone 16 Pro Max */
+      @media screen and (max-width: 440px) {
+        :root {
+          /* Calculate proportional scaling for mobile */
+          --mobile-scale-factor: calc(100vw / var(--mobile-reference-width));
+          
+          /* Apply mobile scaling to base sizes */
+          --base-padding: var(--mobile-padding);
+          --base-gap: var(--mobile-gap);
+          --base-name-size: var(--mobile-name-size);
+          --base-text-size: var(--mobile-text-size);
+          --base-contact-title-size: var(--mobile-contact-title-size);
+          --base-contact-text-size: var(--mobile-contact-text-size);
+          --base-back-size: var(--mobile-back-size);
+        }
+        
+        body {
+          overflow-y: auto; /* Enable native scrolling */
+          height: auto;
+        }
+        
+        .container {
+          display: flex;
+          flex-direction: column;
+          grid-template-columns: unset;
+          gap: 1.5rem;
+          padding: 1.5rem;
+          height: auto;
+          min-height: 100vh;
+        }
+        
+        .back-button {
+          position: absolute;
+          top: 1.5rem;
+          left: 1.5rem;
+          font-size: var(--base-back-size);
+        }
+        
+        /* Name at the top, centered */
+        .name {
+          width: 100%;
+          text-align: center;
+          font-size: var(--base-name-size);
+          margin-top: 1.5rem;
+          margin-bottom: 2rem;
+          padding-top: 0.5rem; /* Align with back button */
+        }
+        
+        /* Profile section restructured */
+        .profile-section {
+          height: auto;
+          gap: 1.5rem; /* Increase spacing between profile picture and contacts */
+          justify-content: space-between; /* Better spacing distribution */
+          flex-direction: row;
+          flex-wrap: wrap;
+          margin-bottom: 2rem; /* Space before description */
+        }
+        
+        /* Profile picture on the left */
+        .profile-image-container {
+          width: 42%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+        
+        .profile-image {
+          width: 100%;
+          max-width: 150px;
+          margin: 0;
+          border-radius: 50%;
+        }
+        
+        /* Contacts on the right */
+        .contacts-container {
+          width: 48%;
+          margin-left: auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center; /* Center contents horizontally */
+          padding-top: 0.5rem; /* Add some top padding to align better with profile image */
+        }
+        
+        .contacts {
+          text-align: center; /* Center text */
+          margin: 0;
+          padding: 0;
+          width: 100%;
+        }
+        
+        .contacts h2 {
+          font-size: var(--base-contact-title-size);
+          margin-bottom: 1rem; /* Increase spacing after heading */
+          text-align: center; /* Center heading */
+          margin-top: 0;
+        }
+        
+        .contacts a {
+          font-size: var(--base-contact-text-size);
+          margin-bottom: 0.6rem; /* Increase spacing between links */
+          display: block;
+          text-align: center; /* Center links */
+        }
+        
+        /* Description below profile and contacts */
+        .description {
+          width: 100%;
+          height: auto;
+          gap: 1.2rem;
+          justify-content: flex-start;
+          margin-top: 0;
+          border-top: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator */
+          padding-top: 1.5rem;
+        }
+        
+        .description p {
+          font-size: var(--base-text-size);
+          margin-bottom: 1rem;
+        }
+      }
     </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        adjustForScreenSize();
+        window.addEventListener('resize', adjustForScreenSize);
+        
+        // Also adjust on orientation change
+        window.addEventListener('orientationchange', () => {
+          setTimeout(() => {
+            adjustForScreenSize();
+          }, 100);
+        });
+      });
+      
+      function adjustForScreenSize() {
+        const mobileReferenceWidth = 375;
+        const mobileMaxWidth = 440;
+        const currentWidth = window.innerWidth;
+        
+        // Mobile scaling (iPhone devices up to iPhone 16 Pro Max)
+        if (currentWidth <= mobileMaxWidth) {
+          // Calculate mobile scaling factor based on reference width
+          const mobileScaleFactor = Math.min(1.2, currentWidth / mobileReferenceWidth);
+          
+          // Apply mobile scaling factor to document root
+          document.documentElement.style.setProperty('--mobile-scale-factor', mobileScaleFactor.toString());
+          
+          // Scale font sizes proportionally for mobile
+          const nameSize = Math.min(2 * mobileScaleFactor, 2.5);
+          const textSize = Math.min(1 * mobileScaleFactor, 1.2);
+          const contactTitleSize = Math.min(1.3 * mobileScaleFactor, 1.5);
+          const contactTextSize = Math.min(1 * mobileScaleFactor, 1.2);
+          const backSize = Math.min(0.9 * mobileScaleFactor, 1.1);
+          
+          document.documentElement.style.setProperty('--mobile-name-size', `${nameSize}rem`);
+          document.documentElement.style.setProperty('--mobile-text-size', `${textSize}rem`);
+          document.documentElement.style.setProperty('--mobile-contact-title-size', `${contactTitleSize}rem`);
+          document.documentElement.style.setProperty('--mobile-contact-text-size', `${contactTextSize}rem`);
+          document.documentElement.style.setProperty('--mobile-back-size', `${backSize}rem`);
+          
+          // Restructure DOM for mobile layout
+          restructureForMobile();
+          
+          // Additional adjustments for larger iPhones
+          if (currentWidth > 390) {
+            const profileImageContainer = document.querySelector('.profile-image-container') as HTMLElement;
+            const contactsContainer = document.querySelector('.contacts-container') as HTMLElement;
+            const profileSection = document.querySelector('.profile-section') as HTMLElement;
+            
+            if (profileImageContainer && contactsContainer && profileSection) {
+              // Adjust spacing for larger screens
+              profileImageContainer.style.width = '40%';
+              contactsContainer.style.width = '50%';
+              
+              // Increase gap for larger screens
+              profileSection.style.gap = '2rem';
+            }
+          }
+          
+          console.log(`Mobile: Screen width: ${currentWidth}px, Scale factor: ${mobileScaleFactor}, Name size: ${nameSize}rem`);
+        } else {
+          // Reset to desktop layout if needed
+          resetToDesktop();
+          
+          console.log(`Desktop: Screen width: ${currentWidth}px`);
+        }
+      }
+      
+      function restructureForMobile() {
+        // Only restructure if not already done
+        if (document.querySelector('.profile-image-container') || document.querySelector('.contacts-container')) {
+          return;
+        }
+        
+        const profileSection = document.querySelector('.profile-section') as HTMLElement;
+        const name = document.querySelector('.name') as HTMLElement;
+        const profileImage = document.querySelector('.profile-image') as HTMLImageElement;
+        const contacts = document.querySelector('.contacts') as HTMLElement;
+        
+        if (profileSection && name && profileImage && contacts) {
+          // Move name to the top of the container
+          const container = document.querySelector('.container') as HTMLElement;
+          if (container) {
+            container.insertBefore(name.cloneNode(true), container.firstChild);
+            name.remove();
+          }
+          
+          // Create containers for profile image and contacts
+          const profileImageContainer = document.createElement('div');
+          profileImageContainer.className = 'profile-image-container';
+          profileImageContainer.appendChild(profileImage.cloneNode(true));
+          
+          const contactsContainer = document.createElement('div');
+          contactsContainer.className = 'contacts-container';
+          contactsContainer.appendChild(contacts.cloneNode(true));
+          
+          // Clear profile section and add new containers directly
+          while (profileSection.firstChild) {
+            profileSection.removeChild(profileSection.firstChild);
+          }
+          
+          // Add image and contacts directly to profile section (side by side)
+          profileSection.appendChild(profileImageContainer);
+          profileSection.appendChild(contactsContainer);
+        }
+      }
+      
+      function resetToDesktop() {
+        const profileImageContainer = document.querySelector('.profile-image-container') as HTMLElement;
+        const contactsContainer = document.querySelector('.contacts-container') as HTMLElement;
+        
+        if (!profileImageContainer || !contactsContainer) {
+          return;
+        }
+        
+        const profileSection = document.querySelector('.profile-section') as HTMLElement;
+        const container = document.querySelector('.container') as HTMLElement;
+        
+        if (profileSection && container) {
+          // Get elements from containers
+          const name = container.querySelector('.name') as HTMLElement;
+          const profileImage = profileImageContainer.querySelector('.profile-image') as HTMLImageElement;
+          const contacts = contactsContainer.querySelector('.contacts') as HTMLElement;
+          
+          if (name && profileImage && contacts) {
+            // Clear profile section
+            while (profileSection.firstChild) {
+              profileSection.removeChild(profileSection.firstChild);
+            }
+            
+            // Restore original structure
+            const newName = name.cloneNode(true);
+            profileSection.appendChild(newName);
+            profileSection.appendChild(profileImage.cloneNode(true));
+            profileSection.appendChild(contacts.cloneNode(true));
+            
+            // Remove name from container
+            name.remove();
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <a href="/" class="back-button">back</a>

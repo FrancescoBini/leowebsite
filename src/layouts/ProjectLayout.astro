@@ -28,6 +28,18 @@ const { title } = Astro.props;
         --base-back-size: 1rem;
         --base-content-width: 500px;
         --base-container-width: 1400px;
+        
+        /* Mobile reference dimensions */
+        --mobile-reference-width: 375px;
+        --mobile-max-width: 440px;
+        --mobile-scale-factor: 1;
+        
+        /* Mobile base sizes */
+        --mobile-padding: 1.5rem;
+        --mobile-gap: 1.5rem;
+        --mobile-title-size: 2rem;
+        --mobile-text-size: 1rem;
+        --mobile-back-size: 0.9rem;
       }
       
       body {
@@ -201,24 +213,156 @@ const { title } = Astro.props;
           gap: calc((var(--base-gap) * 0.5) * var(--scale-factor));
         }
       }
+      
+      /* Mobile styles for iPhone devices up to iPhone 16 Pro Max */
+      @media screen and (max-width: 440px) {
+        :root {
+          /* Calculate proportional scaling for mobile */
+          --mobile-scale-factor: calc(100vw / var(--mobile-reference-width));
+          
+          /* Apply mobile scaling to base sizes */
+          --base-padding: var(--mobile-padding);
+          --base-gap: var(--mobile-gap);
+          --base-title-size: var(--mobile-title-size);
+          --base-text-size: var(--mobile-text-size);
+          --base-back-size: var(--mobile-back-size);
+        }
+        
+        body {
+          overflow-y: auto; /* Enable native scrolling */
+          height: auto;
+        }
+        
+        .wrapper {
+          height: auto;
+          min-height: 100vh;
+          position: relative; /* Create stacking context */
+        }
+        
+        .container {
+          display: flex;
+          flex-direction: column;
+          grid-template-columns: unset;
+          padding: var(--base-padding);
+          padding-top: calc(var(--base-padding) * 4); /* Increase padding for more space below title */
+          height: auto;
+          min-height: 100vh;
+        }
+        
+        .back-button {
+          position: absolute;
+          top: var(--base-padding);
+          left: var(--base-padding);
+          z-index: 20; /* Ensure back button is above title */
+        }
+        
+        /* Title at the top, centered and aligned with back button */
+        .title {
+          position: absolute;
+          top: var(--base-padding);
+          left: 0;
+          right: 0;
+          text-align: center;
+          margin: 0 auto;
+          padding: 0;
+          font-size: var(--base-title-size);
+          width: 70%;
+          z-index: 10; /* Ensure title is above other elements */
+        }
+        
+        .content {
+          order: 2; /* Move content after images */
+          padding-top: 0;
+          max-width: 100%;
+          height: auto;
+          margin-top: 1rem;
+          position: relative; /* Ensure proper stacking context */
+        }
+        
+        .description {
+          height: auto;
+          max-height: none;
+          overflow-y: visible;
+          padding-right: 0;
+          margin-bottom: 1.5rem;
+        }
+        
+        .images {
+          order: 1; /* Show images first */
+          display: flex;
+          flex-direction: column;
+          grid-template-rows: unset;
+          gap: 1rem;
+          height: auto;
+          margin-top: 1rem; /* Add some top margin for extra spacing */
+          position: relative; /* Not sticky */
+          top: auto;
+          padding-top: 0.5rem; /* Additional padding at the top */
+        }
+        
+        .main-image {
+          width: 100%;
+          height: auto;
+          margin-bottom: 0.5rem;
+        }
+        
+        .small-images {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+        }
+        
+        .small-image {
+          width: 100%;
+          height: auto;
+        }
+      }
     </style>
     <script>
       // Add scroll event listener to handle scrolling anywhere on the page
       document.addEventListener('DOMContentLoaded', () => {
         const description = document.querySelector('.description');
         
-        // Handle wheel events anywhere on the page
-        document.body.addEventListener('wheel', (e) => {
+        // Function to toggle scroll behavior based on window width
+        function toggleScrollBehavior() {
+          const currentWidth = window.innerWidth;
+          
+          // Remove any existing wheel event listeners
+          document.body.removeEventListener('wheel', handleWheel);
+          
+          // Only apply custom scroll for desktop
+          if (currentWidth > 440) {
+            // Add wheel event listener for desktop
+            document.body.addEventListener('wheel', handleWheel, { passive: false });
+          }
+        }
+        
+        // Wheel event handler function
+        function handleWheel(e: WheelEvent) {
           e.preventDefault(); // Prevent default scroll
           
           // Scroll the description div
           if (description) {
             description.scrollTop += e.deltaY;
           }
-        }, { passive: false });
+        }
         
-        // Add resize listener to apply custom scaling
-        window.addEventListener('resize', adjustForScreenSize);
+        // Initial toggle
+        toggleScrollBehavior();
+        
+        // Add resize listener to toggle scroll behavior and apply custom scaling
+        window.addEventListener('resize', () => {
+          toggleScrollBehavior();
+          adjustForScreenSize();
+        });
+        
+        // Also adjust on orientation change
+        window.addEventListener('orientationchange', () => {
+          setTimeout(() => {
+            toggleScrollBehavior();
+            adjustForScreenSize();
+          }, 100);
+        });
         
         // Run once on load
         adjustForScreenSize();
@@ -226,10 +370,46 @@ const { title } = Astro.props;
       
       function adjustForScreenSize() {
         const referenceWidth = 1550;
+        const mobileReferenceWidth = 375;
+        const mobileMaxWidth = 440;
         const currentWidth = window.innerWidth;
         
-        // Only apply scaling for screens larger than the reference
-        if (currentWidth > referenceWidth) {
+        // Mobile scaling (iPhone devices up to iPhone 16 Pro Max)
+        if (currentWidth <= mobileMaxWidth) {
+          // Calculate mobile scaling factor based on reference width
+          const mobileScaleFactor = Math.min(1.2, currentWidth / mobileReferenceWidth);
+          
+          // Apply mobile scaling factor to document root
+          document.documentElement.style.setProperty('--mobile-scale-factor', mobileScaleFactor.toString());
+          
+          // Scale font sizes proportionally for mobile
+          const titleSize = Math.min(2 * mobileScaleFactor, 2.5);
+          const textSize = Math.min(1 * mobileScaleFactor, 1.2);
+          const backSize = Math.min(0.9 * mobileScaleFactor, 1.1);
+          
+          document.documentElement.style.setProperty('--mobile-title-size', `${titleSize}rem`);
+          document.documentElement.style.setProperty('--mobile-text-size', `${textSize}rem`);
+          document.documentElement.style.setProperty('--mobile-back-size', `${backSize}rem`);
+          
+          // Restructure DOM for mobile layout
+          restructureForMobile();
+          
+          // Additional adjustments for larger iPhones
+          if (currentWidth > 390) {
+            const container = document.querySelector('.container') as HTMLElement;
+            const images = document.querySelector('.images') as HTMLElement;
+            
+            if (container && images) {
+              // Increase spacing for larger screens
+              container.style.paddingTop = `calc(var(--base-padding) * 4.5)`;
+              images.style.marginTop = '1.5rem';
+            }
+          }
+          
+          console.log(`Mobile: Screen width: ${currentWidth}px, Scale factor: ${mobileScaleFactor}, Title size: ${titleSize}rem`);
+        }
+        // Desktop scaling for screens larger than reference
+        else if (currentWidth > referenceWidth) {
           // Calculate scaling factor (capped to prevent excessive scaling)
           const scaleFactor = Math.min(1.5, currentWidth / referenceWidth);
           
@@ -243,11 +423,67 @@ const { title } = Astro.props;
           // Calculate and set the container width based on the viewport
           const containerWidth = Math.min(1400 * scaleFactor * 1.2, currentWidth * 0.9);
           document.documentElement.style.setProperty('--base-container-width', `${containerWidth}px`);
+          
+          // Reset DOM structure for desktop if needed
+          resetToDesktop();
+          
+          console.log(`Desktop: Screen width: ${currentWidth}px, Scale factor: ${scaleFactor}, Content width: ${contentWidth}px`);
         } else {
-          // Reset to default values for smaller screens
+          // Reset to default values for standard desktop screens
           document.documentElement.style.setProperty('--scale-factor', '1');
           document.documentElement.style.setProperty('--base-content-width', '500px');
           document.documentElement.style.setProperty('--base-container-width', '1400px');
+          
+          // Reset DOM structure for desktop if needed
+          resetToDesktop();
+          
+          console.log(`Standard: Screen width: ${currentWidth}px, Scale factor: 1 (default)`);
+        }
+      }
+      
+      // Function to restructure DOM for mobile layout
+      function restructureForMobile() {
+        // Only restructure if not already done
+        if (document.querySelector('.mobile-restructured')) {
+          return;
+        }
+        
+        const wrapper = document.querySelector('.wrapper');
+        const container = document.querySelector('.container');
+        const content = document.querySelector('.content');
+        const title = document.querySelector('.title');
+        
+        if (wrapper && container && content && title) {
+          // Mark as restructured
+          wrapper.classList.add('mobile-restructured');
+          
+          // Move title to the top of the wrapper (outside container)
+          if (title.parentElement === content) {
+            // Insert after back button if it exists, otherwise at the beginning
+            if (wrapper.firstChild) {
+              wrapper.insertBefore(title, wrapper.firstChild.nextSibling || wrapper.firstChild);
+            } else {
+              wrapper.appendChild(title);
+            }
+          }
+        }
+      }
+      
+      // Function to reset DOM structure for desktop
+      function resetToDesktop() {
+        const wrapper = document.querySelector('.wrapper');
+        const container = document.querySelector('.container');
+        const content = document.querySelector('.content');
+        const title = document.querySelector('.title');
+        
+        if (wrapper && container && content && title) {
+          // Remove restructured marker
+          wrapper.classList.remove('mobile-restructured');
+          
+          // Move title back to content if it's directly under wrapper
+          if (title.parentElement === wrapper) {
+            content.insertBefore(title, content.firstChild);
+          }
         }
       }
     </script>

@@ -31,6 +31,18 @@ const last_posts = posts.slice(0, 3);
         
         /* Proportional constraints */
         --section-width-ratio: 0.4; /* 40% of viewport width */
+        
+        /* Mobile reference dimensions */
+        --mobile-reference-width: 375px;
+        --mobile-max-width: 440px;
+        --mobile-scale-factor: 1;
+        
+        /* Mobile base sizes */
+        --mobile-padding: 1.5rem;
+        --mobile-name-size: 2.5rem;
+        --mobile-tagline-size: 1rem;
+        --mobile-nav-size: 1.1rem;
+        --mobile-nav-spacing: 0.8rem;
       }
 
       body {
@@ -182,6 +194,109 @@ const last_posts = posts.slice(0, 3);
           font-size: 1.2rem;
         }
       }
+      
+      /* Mobile styles for iPhone devices up to iPhone 16 Pro Max */
+      @media screen and (max-width: 440px) {
+        :root {
+          /* Calculate proportional scaling for mobile */
+          --mobile-scale-factor: calc(100vw / var(--mobile-reference-width));
+          
+          /* Apply mobile scaling to base sizes */
+          --base-padding: var(--mobile-padding);
+          --base-name-size: var(--mobile-name-size);
+          --base-tagline-size: var(--mobile-tagline-size);
+          --base-nav-size: var(--mobile-nav-size);
+          --base-nav-spacing: var(--mobile-nav-spacing);
+        }
+        
+        body {
+          overflow-y: auto; /* Enable native scrolling */
+        }
+        
+        .container {
+          height: auto;
+          min-height: 100vh;
+        }
+        
+        .content {
+          flex-direction: column;
+          align-items: center;
+          padding: var(--base-padding);
+          height: auto;
+          min-height: 100vh;
+          text-align: center;
+          justify-content: center; /* Center content vertically */
+        }
+        
+        .left-section {
+          flex: 1;
+          width: 100%;
+          height: auto;
+          min-height: unset; /* Remove fixed height constraint */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-bottom: 0;
+          justify-content: flex-start;
+          gap: 2rem;
+        }
+        
+        .header {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 0;
+        }
+        
+        .name {
+          font-size: var(--base-name-size);
+          text-align: center;
+          margin-top: 1rem;
+        }
+        
+        .tagline {
+          font-size: var(--base-tagline-size);
+          white-space: normal;
+          text-align: center;
+          max-width: 90%;
+        }
+        
+        .navigation {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 0;
+          margin-bottom: 2rem;
+        }
+        
+        .navigation li {
+          margin-bottom: var(--base-nav-spacing);
+          text-align: center;
+        }
+        
+        .more-link {
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+        }
+      }
+      
+      /* Additional adjustments for larger iPhones (iPhone 14 Pro Max and similar) */
+      @media screen and (min-width: 390px) and (max-width: 440px) {
+        .content {
+          justify-content: center;
+        }
+        
+        .left-section {
+          gap: 3rem; /* Increase gap for better distribution on larger screens */
+        }
+        
+        /* Ensure navigation is centered on screen */
+        .navigation {
+          margin-top: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -216,14 +331,69 @@ const last_posts = posts.slice(0, 3);
       window.addEventListener('resize', adjustForScreenSize);
       
       // Run once on load
-      document.addEventListener('DOMContentLoaded', adjustForScreenSize);
+      document.addEventListener('DOMContentLoaded', () => {
+        adjustForScreenSize();
+        adjustMobileLayout();
+      });
+      
+      function adjustMobileLayout() {
+        const currentWidth = window.innerWidth;
+        const currentHeight = window.innerHeight;
+        
+        // Only apply for mobile devices
+        if (currentWidth <= 440) {
+          const leftSection = document.querySelector('.left-section') as HTMLElement;
+          const header = document.querySelector('.header') as HTMLElement;
+          const navigation = document.querySelector('.navigation') as HTMLElement;
+          
+          if (leftSection && header && navigation) {
+            // For taller screens (like iPhone 14 Pro Max), adjust spacing
+            if (currentHeight > 800) {
+              // Calculate appropriate gap based on screen height
+              const gapSize = Math.max(3, currentHeight / 200); // Adjust divisor as needed
+              leftSection.style.gap = `${gapSize}rem`;
+              
+              // Add some top margin to the navigation for better centering
+              navigation.style.marginTop = `${gapSize / 2}rem`;
+            } else {
+              // Reset for smaller screens
+              leftSection.style.gap = '2rem';
+              navigation.style.marginTop = '0';
+            }
+          }
+        }
+      }
       
       function adjustForScreenSize() {
         const referenceWidth = 1550;
+        const mobileReferenceWidth = 375;
+        const mobileMaxWidth = 440;
         const currentWidth = window.innerWidth;
         
-        // Only apply scaling for screens larger than the reference
-        if (currentWidth > referenceWidth) {
+        // Mobile scaling (iPhone devices up to iPhone 16 Pro Max)
+        if (currentWidth <= mobileMaxWidth) {
+          // Calculate mobile scaling factor based on reference width
+          const mobileScaleFactor = Math.min(1.2, currentWidth / mobileReferenceWidth);
+          
+          // Apply mobile scaling factor to document root
+          document.documentElement.style.setProperty('--mobile-scale-factor', mobileScaleFactor.toString());
+          
+          // Scale font sizes proportionally for mobile
+          const nameSize = Math.min(2.5 * mobileScaleFactor, 3);
+          const taglineSize = Math.min(1 * mobileScaleFactor, 1.2);
+          const navSize = Math.min(1.1 * mobileScaleFactor, 1.3);
+          
+          document.documentElement.style.setProperty('--mobile-name-size', `${nameSize}rem`);
+          document.documentElement.style.setProperty('--mobile-tagline-size', `${taglineSize}rem`);
+          document.documentElement.style.setProperty('--mobile-nav-size', `${navSize}rem`);
+          
+          // Adjust layout for different mobile screen sizes
+          adjustMobileLayout();
+          
+          console.log(`Mobile: Screen width: ${currentWidth}px, Scale factor: ${mobileScaleFactor}, Name size: ${nameSize}rem`);
+        }
+        // Desktop scaling for screens larger than reference
+        else if (currentWidth > referenceWidth) {
           // Calculate scaling factor (capped to prevent excessive scaling)
           const scaleFactor = Math.min(1.2, currentWidth / referenceWidth);
           
@@ -234,14 +404,22 @@ const last_posts = posts.slice(0, 3);
           const sectionWidth = Math.min(600 * scaleFactor, currentWidth * 0.4);
           document.documentElement.style.setProperty('--base-section-width', `${sectionWidth}px`);
           
-          console.log(`Screen width: ${currentWidth}px, Scale factor: ${scaleFactor}, Section width: ${sectionWidth}px`);
+          console.log(`Desktop: Screen width: ${currentWidth}px, Scale factor: ${scaleFactor}, Section width: ${sectionWidth}px`);
         } else {
-          // Reset scaling for smaller screens
+          // Reset scaling for standard desktop screens
           document.documentElement.style.setProperty('--scale-factor', '1');
           document.documentElement.style.setProperty('--base-section-width', '600px');
-          console.log(`Screen width: ${currentWidth}px, Scale factor: 1 (default), Section width: 600px`);
+          console.log(`Standard: Screen width: ${currentWidth}px, Scale factor: 1 (default), Section width: 600px`);
         }
       }
+      
+      // Also adjust on orientation change
+      window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+          adjustForScreenSize();
+          adjustMobileLayout();
+        }, 100);
+      });
     </script>
   </body>
 </html>
