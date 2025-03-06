@@ -1,0 +1,247 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HorizontalCard from "../components/HorizontalCard.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../lib/createSlug"
+
+const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const last_posts = posts.slice(0, 3);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leonardo Possati - Designer</title>
+    <style>
+      :root {
+        /* Reference dimensions based on 14-inch MacBook Pro */
+        --reference-width: 1512px;
+        --max-reference-width: 1550px;
+        --scale-factor: 1;
+        
+        /* Base sizes that will be scaled */
+        --base-padding: 2rem;
+        --base-name-size: 3.5rem;
+        --base-tagline-size: 1.2rem;
+        --base-nav-size: 1.2rem;
+        --base-nav-spacing: 1rem;
+        --base-section-width: 600px;
+        
+        /* Proportional constraints */
+        --section-width-ratio: 0.4; /* 40% of viewport width */
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/images/background.png');
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+      }
+      
+      /* Container to maintain proportional layout */
+      .container {
+        width: 100%;
+        height: 100vh;
+        max-width: var(--max-reference-width);
+        margin: 0 auto;
+        position: relative;
+      }
+      
+      /* For screens wider than reference, apply container scaling */
+      @media screen and (min-width: 1551px) {
+        .container {
+          max-width: none;
+          width: 100%;
+        }
+      }
+      
+      .content {
+        display: flex;
+        height: 100vh;
+        padding: var(--base-padding);
+        position: relative;
+        z-index: 1;
+        box-sizing: border-box;
+        padding-left: calc(var(--base-padding) + 20px);
+      }
+      
+      .left-section {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        height: calc(100vh - (var(--base-padding) * 2));
+        width: min(var(--base-section-width), calc(var(--section-width-ratio) * 100vw));
+        padding-bottom: 20px;
+      }
+      
+      .header {
+        width: 100%;
+      }
+      
+      .name {
+        font-size: var(--base-name-size);
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      
+      .tagline {
+        font-size: var(--base-tagline-size);
+        font-style: italic;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+        white-space: nowrap;
+        max-width: 100%;
+      }
+      
+      .more-link {
+        color: white;
+        text-decoration: underline;
+        font-size: 1rem;
+      }
+      
+      .navigation {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+      
+      .navigation li {
+        margin-bottom: var(--base-nav-spacing);
+      }
+      
+      .navigation a {
+        color: white;
+        text-decoration: none;
+        font-size: var(--base-nav-size);
+        transition: opacity 0.2s;
+      }
+      
+      .navigation a:hover {
+        opacity: 0.7;
+      }
+
+      /* Scaling for screens larger than reference width */
+      @media screen and (min-width: 1551px) {
+        :root {
+          /* Calculate proportional scaling */
+          --scale-factor: calc(100vw / var(--max-reference-width));
+          
+          /* Apply scaling to base sizes with controlled growth */
+          --base-padding: calc(2rem * min(1.2, var(--scale-factor)));
+          /* Increase font sizes by 20% (additional 10%) */
+          --base-name-size: calc(3.5rem * min(1.35, var(--scale-factor) * 1.2));
+          --base-tagline-size: calc(1.2rem * min(1.35, var(--scale-factor) * 1.2));
+          --base-nav-size: calc(1.2rem * min(1.35, var(--scale-factor) * 1.2));
+          --base-nav-spacing: calc(1rem * min(1.2, var(--scale-factor)));
+        }
+        
+        /* Maintain proportional spacing */
+        .content {
+          padding-left: calc((var(--base-padding) * 1.5) + (20px * var(--scale-factor)));
+        }
+        
+        /* Scale the bottom padding and margin for larger screens */
+        .left-section {
+          padding-bottom: calc(20px * var(--scale-factor));
+          width: min(calc(var(--base-section-width) * 1.7), calc(var(--section-width-ratio) * 100vw * 1.7));
+        }
+        
+        .navigation {
+          margin-bottom: calc(20px * var(--scale-factor));
+        }
+        
+        /* Fix tagline text overflow on larger screens */
+        .tagline {
+          white-space: nowrap;
+          overflow: visible;
+          width: auto;
+          max-width: 100%;
+        }
+        
+        /* Increase more-link font size by 20% */
+        .more-link {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background"></div>
+    <div class="container">
+      <div class="content">
+        <div class="left-section">
+          <div class="header">
+            <h1 class="name">Leonardo Possati</h1>
+            <p class="tagline">Exploring the interplay of art, design and materiality. Where precision meets spontaneity.</p>
+            <a href="/about" class="more-link">more about me</a>
+          </div>
+          <nav>
+            <ul class="navigation">
+              <li><a href="/shell-chair">SHELL CHAIR</a></li>
+              <li><a href="/ti-lamp">TI LAMP</a></li>
+              <li><a href="/domus-bulgari">DOMUS BULGARI</a></li>
+              <li><a href="/light-lines">LIGHT LINES</a></li>
+              <li><a href="/boba-table">BOBA TABLE</a></li>
+              <li><a href="/foldy">FOLDY</a></li>
+              <li><a href="/otio">OTIO</a></li>
+              <li><a href="/sonus">SONUS</a></li>
+              <li><a href="/renders">RENDERS</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Add a resize listener to apply custom scaling
+      window.addEventListener('resize', adjustForScreenSize);
+      
+      // Run once on load
+      document.addEventListener('DOMContentLoaded', adjustForScreenSize);
+      
+      function adjustForScreenSize() {
+        const referenceWidth = 1550;
+        const currentWidth = window.innerWidth;
+        
+        // Only apply scaling for screens larger than the reference
+        if (currentWidth > referenceWidth) {
+          // Calculate scaling factor (capped to prevent excessive scaling)
+          const scaleFactor = Math.min(1.2, currentWidth / referenceWidth);
+          
+          // Apply scaling factor to document root for CSS variable access
+          document.documentElement.style.setProperty('--scale-factor', scaleFactor.toString());
+          
+          // Calculate and set the section width based on the viewport
+          const sectionWidth = Math.min(600 * scaleFactor, currentWidth * 0.4);
+          document.documentElement.style.setProperty('--base-section-width', `${sectionWidth}px`);
+          
+          console.log(`Screen width: ${currentWidth}px, Scale factor: ${scaleFactor}, Section width: ${sectionWidth}px`);
+        } else {
+          // Reset scaling for smaller screens
+          document.documentElement.style.setProperty('--scale-factor', '1');
+          document.documentElement.style.setProperty('--base-section-width', '600px');
+          console.log(`Screen width: ${currentWidth}px, Scale factor: 1 (default), Section width: 600px`);
+        }
+      }
+    </script>
+  </body>
+</html>
