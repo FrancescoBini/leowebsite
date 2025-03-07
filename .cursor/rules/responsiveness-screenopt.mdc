@@ -1,3 +1,9 @@
+---
+description: 
+globs: *.css, *.scss, *.js, *.ts, *.jsx, *.tsx, *.html, *.astro
+alwaysApply: true
+---
+
 Overview
 This rule provides a comprehensive framework for implementing responsive design that scales proportionally across all device sizes, from mobile phones to large desktop displays. It uses a combination of CSS variables, media queries, and JavaScript to create fluid, proportional layouts that maintain design integrity at any viewport size.
 Implementation Guide
